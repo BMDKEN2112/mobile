@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_home"
+        android:enabled="true"
+        android:title="Home"
+        android:icon="@drawable/home_button" />
+    <item
+        android:id="@+id/navigation_search"
+        android:title="Search"
+        android:enabled="true"
+        android:icon="@drawable/search_button" />
+    <item
+        android:id="@+id/navigation_add"
+        android:title="Add"
+        android:enabled="true"
+        android:icon="@drawable/add_button" />
+</menu>
