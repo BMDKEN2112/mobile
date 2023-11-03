@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 DatabaseHelper db = new DatabaseHelper(MainActivity.this);
-                List<HikeModel> hikeList = db.getAllHikes();
+                List<HikeModel> hikeList = db.fetchHikeData();
                 if (currentImageIndex < hikeList.size() - 1) {
                     currentImageIndex++; // Move to the next hike
                     displayHike(currentImageIndex);
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void displayHike(int index) {
         DatabaseHelper db = new DatabaseHelper(MainActivity.this);
-        List<HikeModel> hikeList = db.getAllHikes();
+        List<HikeModel> hikeList = db.fetchHikeData();
 
         if (index >= 0 && index < hikeList.size()) {
             HikeModel hike = hikeList.get(index);
@@ -113,13 +113,11 @@ public class MainActivity extends AppCompatActivity {
             locationTextView.setText("Location: " + hike.getLocation());
             TextView lengthTextView = findViewById(R.id.lengthTextView);
             lengthTextView.setText("Length: " + hike.getLength());
+
             TextView parkingTextView = findViewById(R.id.parkingTextView);
-            parkingTextView.setText("Parking: " + hike.getParking());
-            if (hike.getParking()) {
-                parkingTextView.setText("Parking: Yes");
-            } else {
-                parkingTextView.setText("Parking: No");
-            }
+            int parkingValue = hike.getParking();
+            parkingTextView.setText("Parking: " + (parkingValue == 1 ? "Yes" : "No"));
+
             TextView difficultyTextView = findViewById(R.id.difficultyTextView);
             difficultyTextView.setText("Difficulty: " + hike.getDifficulty());
             TextView dateTextView = findViewById(R.id.dateTextView);

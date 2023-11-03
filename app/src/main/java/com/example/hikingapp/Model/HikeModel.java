@@ -9,7 +9,7 @@ public class HikeModel {
     private String Name;
     private String Location;
     private String Date;
-    private boolean Parking;
+    private int Parking;
     private String Length;
     private String Difficulty;
     private String Description;
@@ -20,7 +20,7 @@ public class HikeModel {
 
     }
 
-    public HikeModel(int ID, String Name, String Location, String Date, boolean Parking, String Length, String Difficulty, String Description, Bitmap hikeImage){
+    public HikeModel(int ID, String Name, String Location, String Date, int Parking, String Length, String Difficulty, String Description, Bitmap hikeImage){
         this.ID = ID;
         this.Name = Name;
         this.Location = Location;
@@ -78,11 +78,11 @@ public class HikeModel {
         this.Date = Date;
     }
 
-    public boolean getParking() {
+    public int getParking() {
         return Parking;
     }
 
-    public void setParking(boolean Parking) {
+    public void setParking(int Parking) {
         this.Parking = Parking;
     }
 

@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 public class HikeDetailActivity extends AppCompatActivity {
 
     private Button updatebutton;
-    private Button deleteButton;
+    private Button deleteButton, updateButton;
 
     private ImageView goback_btn;
 
@@ -32,6 +32,7 @@ public class HikeDetailActivity extends AppCompatActivity {
         goBack();
         dataPassing();
         deleteHike();
+        updateHike();
 
 
     }
@@ -61,14 +62,8 @@ public class HikeDetailActivity extends AppCompatActivity {
                 lengthTextView.setText("Length: " + hike.getLength());
 
                 TextView parkingTextView = findViewById(R.id.detailParkingTextView);
-                parkingTextView.setText("Parking: "  + hike.getParking());
-                if (hike.getParking()) {
-                    parkingTextView.setText("Parking: Yes");
-                } else {
-                    parkingTextView.setText("Parking: No");
-                }
-
-
+                int parkingValue = hike.getParking();
+                parkingTextView.setText("Parking: " + (parkingValue == 1 ? "Yes" : "No"));
 
                 TextView difficultyTextView = findViewById(R.id.detailDifficultyTextView);
                 difficultyTextView.setText("Difficulty: " + hike.getDifficulty());
@@ -89,29 +84,11 @@ public class HikeDetailActivity extends AppCompatActivity {
         }
     }
 
-    private void activityTransition(Class<?> targetActivity) {
-        Intent intent = new Intent(this, targetActivity);
-        intent.putExtra("id", getID());
-        startActivity(intent);
-    }
-
     private int getID() {
         Intent i = getIntent();
         int id = i.getIntExtra("id", 0);
         return id;
     };
-
-    public void onUpdateButtonClick(View view) {
-        // Call the activityTransition function to navigate to the UpdateHikeActivity
-
-        // activityTransition(UpdateHikeActivity.class);
-    }
-
-    public void onAddObservationButtonClick(View view) {
-        // Call the activityTransition function to navigate to the AddObservationActivity
-
-        //activityTransition(AddObservationActivity.class);
-    }
 
     public void goBack() {
         goback_btn = findViewById(R.id.backButton);
@@ -125,36 +102,59 @@ public class HikeDetailActivity extends AppCompatActivity {
     }
 
     public void deleteHike() {
-        Intent intent = getIntent();
-        String hikeJson = intent.getStringExtra("Hike_JSON");
-        Gson gson = new Gson();
-        HikeModel hike = gson.fromJson(hikeJson, HikeModel.class);
-        int id = hike.getId();
-        deleteButton = findViewById(R.id.deleteButton);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Get the hike ID of the current hike
+        int hikeId = getIntent().getIntExtra("Hike_ID", -1);
 
-                try{
+        if (hikeId != -1) {
+            deleteButton = findViewById(R.id.deleteButton);
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        // Call the deleteHikeById method to delete the hike
+                        DatabaseHelper dbHelper = new DatabaseHelper(HikeDetailActivity.this);
+                        dbHelper.deleteHike(hikeId);
 
-                    // Call the deleteHikeById method to delete the hike
-                    DatabaseHelper dbHelper = new DatabaseHelper(HikeDetailActivity.this);
-                    dbHelper.deleteHike(id);
+                        // Show a toast message to indicate the deletion
+                        Toast.makeText(HikeDetailActivity.this, "Hike deleted", Toast.LENGTH_SHORT).show();
 
-                    // Show a toast message to indicate the deletion
-                    Toast.makeText(HikeDetailActivity.this, "dd", Toast.LENGTH_SHORT).show();
-
-                    // Finish the activity to return to the previous screen
-                    finish();
-                }catch(Exception e){
-                    Toast.makeText(HikeDetailActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                        // Finish the activity to return to the previous screen
+                        finish();
+                    } catch (Exception e) {
+                        Toast.makeText(HikeDetailActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-
-        });
-
+            });
+        } else {
+            // Handle the case where the hike ID is not found
+            Toast.makeText(this, "Hike ID not found", Toast.LENGTH_SHORT).show();
+        }
     }
+
+    public void updateHike() {
+        int hikeId = getIntent().getIntExtra("Hike_ID", -1);
+
+        if (hikeId != -1) {
+            updateButton = findViewById(R.id.updateButton);
+            updateButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        // Call the updateHike method to navigate to the UpdateHikeActivity
+                        // Pass the Hike ID to the UpdateHikeActivity
+                        Intent intent = new Intent(HikeDetailActivity.this, UpdateHikeActivity.class);
+                        intent.putExtra("Hike_ID", hikeId);
+                        startActivity(intent);
+                    } catch (Exception e) {
+                        Toast.makeText(HikeDetailActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        } else {
+            // Handle the case where the Hike ID is not found
+            Toast.makeText(this, "Hike ID not found", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
 
 

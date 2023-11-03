@@ -68,9 +68,9 @@ public class AddHikeActivity extends AppCompatActivity {
 
     private RadioGroup parkingRadioGroup;
 
+    RadioButton btnYes, btnNo;
+
     private TextView parkingStatusTextView;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,8 +83,6 @@ public class AddHikeActivity extends AppCompatActivity {
         selectTime();
 
         parkingStatusTextView = findViewById(R.id.parkingStatusTextView);
-        parkingRadioGroup = findViewById(R.id.parkingRadioGroup);
-        //        captureImageButton = findViewById(R.id.captureImageButton);
 
     }
 
@@ -98,19 +96,41 @@ public class AddHikeActivity extends AppCompatActivity {
         descriptionEditText = findViewById(R.id.descriptionEditText);
         lengthEditText = findViewById(R.id.lengthEditText);
         hikeDateEditText = findViewById(R.id.hikeDateEditText);
+        btnYes = findViewById(R.id.yesRadioButton);
+        btnNo = findViewById(R.id.noRadioButton);
+
+
+//        final int[] isParking;
+//        if(btnYes.isChecked()) {
+//            isParking =  1;
+//        } else {
+//            isParking = 0;
+//        }
+
+        final int[] isParking = {btnYes.isChecked() ? 1 : 0};
+
+        parkingRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.yesRadioButton) {
+                    isParking[0] = 1; // Yes is selected
+                } else if (checkedId == R.id.noRadioButton) {
+                    isParking[0] = 0; // No is selected
+                }
+            }
+        });
 
         addHikeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try{
                     DatabaseHelper db = new DatabaseHelper(AddHikeActivity.this);
-                    boolean selectedParking = getSelectedParking();
 
                     db.addHike(
                             hikeNameEditText.getText().toString().trim(),
                             locationEditText.getText().toString().trim(),
                             hikeDateEditText.getText().toString().trim(),
-                            selectedParking,
+                            isParking[0],
                             lengthEditText.getText().toString().trim(),
                             difficultyEditText.getText().toString().trim(),
                             descriptionEditText.getText().toString().trim(),
@@ -123,25 +143,6 @@ public class AddHikeActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-        parkingRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                // Check which radio button is selected and update the TextView
-                if (checkedId == R.id.yesRadioButton) {
-                    parkingStatusTextView.setText("Parking: Yes");
-                } else if (checkedId == R.id.noRadioButton) {
-                    parkingStatusTextView.setText("Parking: No");
-                }
-            }
-        });
-
-    }
-
-    private boolean getSelectedParking() {
-        int selectedRadioButtonId = parkingRadioGroup.getCheckedRadioButtonId();
-        return selectedRadioButtonId == R.id.yesRadioButton;
     }
 
     public void selectImage() {

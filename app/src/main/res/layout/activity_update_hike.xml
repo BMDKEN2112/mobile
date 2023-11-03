@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UpdateHikeActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/nameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Hike Name"
+            android:minHeight="48dp" />
+
+        <EditText
+            android:id="@+id/locationEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Location"
+            android:minHeight="48dp" />
+
+        <TextView
+            android:id="@+id/dateTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Hike Date"
+            android:minHeight="48dp" />
+
+        <ImageButton
+            android:id="@+id/calendarButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_calendar"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="Select Date"
+            />
+
+        <TextView
+            android:id="@+id/parkingStatusTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:text="Parking: "
+            android:textSize="16sp" />
+
+        <RadioGroup
+            android:id="@+id/parkingRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/parkingStatusTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/lengthEditText">
+
+            <RadioButton
+                android:id="@+id/yesRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes" />
+
+            <RadioButton
+                android:id="@+id/noRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/lengthTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Length of Hike"
+            android:minHeight="48dp" />
+
+        <ImageButton
+            android:id="@+id/timeButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_clock"
+            android:contentDescription="Select Time"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+
+        <EditText
+            android:id="@+id/difficultyEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Level of Difficulty"
+            android:minHeight="48dp" />
+
+        <EditText
+            android:id="@+id/descriptionEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Description (Optional)"
+            android:minHeight="48dp" />
+
+        <ImageView
+            android:id="@+id/hikeImageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            />
+
+        <Button
+            android:id="@+id/updateButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Hike" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
