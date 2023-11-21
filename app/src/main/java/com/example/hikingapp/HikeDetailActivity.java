@@ -3,6 +3,9 @@ package com.example.hikingapp;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,14 +18,13 @@ import com.example.hikingapp.Database.DatabaseHelper;
 import com.example.hikingapp.Model.HikeModel;
 import com.google.gson.Gson;
 
+import java.io.ByteArrayOutputStream;
+
 public class HikeDetailActivity extends AppCompatActivity {
 
-    private Button updatebutton;
-    private Button deleteButton, updateButton;
-
+    private Button deleteButton, updateButton, addObservationButton, viewObservationButton;
     private ImageView goback_btn;
-
-    private HikeModel hike;
+    DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,8 @@ public class HikeDetailActivity extends AppCompatActivity {
         deleteHike();
         updateHike();
 
+        dbHelper = new DatabaseHelper(this);
+        dbHelper.getReadableDatabase(); // Open the database
 
     }
 
@@ -84,9 +88,45 @@ public class HikeDetailActivity extends AppCompatActivity {
         }
     }
 
+//    private void getData(){
+//        Intent i = getIntent();
+//        nameTextView = findViewById(R.id.detailNameTextView);
+//        locationTextView = findViewById(R.id.detailLocationTextView);
+//        lengthTextView = findViewById(R.id.detailLengthTextView);
+//        descriptionTextView = findViewById(R.id.detailDescriptionTextView);
+//        dateTextView = findViewById(R.id.detailDateTextView);
+//        difficultyTextView = findViewById(R.id.detailDifficultyTextView);
+//        parkingTextView = findViewById(R.id.detailParkingTextView);
+//        imageView = findViewById(R.id.detailImageView);
+//
+//
+//        nameTextView.setText(i.getStringExtra("Hike_Name"));
+//        locationTextView.setText(i.getStringExtra("Hike_Location"));
+//        lengthTextView.setText(i.getStringExtra("Hike_Length"));
+//        dateTextView.setText(i.getStringExtra("Hike_Date"));
+//        descriptionTextView.setText(i.getStringExtra("Hike_Description"));
+//        difficultyTextView.setText(i.getStringExtra("Hike_Difficulty"));
+//        int parkingValue = i.getIntExtra("Hike_Parking", 0);
+//        parkingTextView.setText(String.valueOf(parkingValue));
+//
+//        Bitmap hikeImage = i.getParcelableExtra("Hike_Image");
+//        if (hikeImage != null) {
+//            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//            hikeImage.compress(Bitmap.CompressFormat.PNG, 50, stream);
+//            byte[] byteArray = stream.toByteArray();
+//            hikeImage = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+//            imageView.setImageBitmap(hikeImage);
+//        }else{
+//            Log.e("HikeDetailActivity", "Hike image is null. Check why this is happening.");
+//        }
+//
+//
+//    }
+
     private int getID() {
         Intent i = getIntent();
-        int id = i.getIntExtra("id", 0);
+        int id = i.getIntExtra("Hike_ID", 0);
+        Log.d("HikeDetail", "ID: " + id);
         return id;
     };
 
@@ -144,6 +184,7 @@ public class HikeDetailActivity extends AppCompatActivity {
                         Intent intent = new Intent(HikeDetailActivity.this, UpdateHikeActivity.class);
                         intent.putExtra("Hike_ID", hikeId);
                         startActivity(intent);
+                        Toast.makeText(HikeDetailActivity.this, "Update button clicked", Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
                         Toast.makeText(HikeDetailActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                     }
@@ -155,6 +196,38 @@ public class HikeDetailActivity extends AppCompatActivity {
         }
     }
 
+    public void pageTransition(){
+        addObservationButton = findViewById(R.id.addObservationButton);
+
+        Intent intent = new Intent(this, AddObservationActivity.class);
+        intent.putExtra("Hike_ID", getID());
+        this.startActivity(intent);
+        Toast.makeText(HikeDetailActivity.this, "Add observation button clicked", Toast.LENGTH_SHORT).show();
+    }
+
+    public void moveToAddObservation(View view){
+        pageTransition();
+    }
+
+    public void pageTransition2(){
+        viewObservationButton = findViewById(R.id.viewObservationButton);
+
+        Intent intent = new Intent(this, ObservationViewActivity.class);
+        intent.putExtra("Hike_ID", getID());
+        this.startActivity(intent);
+
+    }
+
+    public void moveToViewObservation(View view){
+        int hikeID = getID(); // Get the hike ID
+        boolean hasObservations = dbHelper.hasObservations(hikeID);
+
+        if (hasObservations) {
+            pageTransition2(); // There are observations, proceed to the "View Observation" page
+        } else {
+            Toast.makeText(this, "No observation added yet", Toast.LENGTH_SHORT).show();
+        }
+    }
 
 
 

@@ -42,7 +42,7 @@ public class UpdateHikeActivity extends AppCompatActivity {
     RadioButton yesBTN, noBTN;
     RadioGroup parkingRadioGroup;
 
-    ImageView hikeImageView;
+    ImageView hikeImageView, back_btn;
 
     Button updateHike;
 
@@ -62,8 +62,7 @@ public class UpdateHikeActivity extends AppCompatActivity {
         selectCalendar();
         selectTime();
         getData();
-
-
+        goBack();
 
     }
 
@@ -93,6 +92,7 @@ public class UpdateHikeActivity extends AppCompatActivity {
             difficultyEditText.setText(hike.getDifficulty());
             dateTextView.setText(hike.getDate());
             lengthTextView.setText(hike.getLength());
+
             if(i.getIntExtra("isParking", 0) == 1) {
                 yesBTN.setChecked(true);
             } else {
@@ -105,6 +105,19 @@ public class UpdateHikeActivity extends AppCompatActivity {
             } else {
                 isParking = 0;
             }
+
+            final int[] Parking = {yesBTN.isChecked() ? 1 : 0};
+
+            parkingRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    if (checkedId == R.id.yesRadioButton) {
+                        Parking[0] = 1; // Yes is selected
+                    } else if (checkedId == R.id.noRadioButton) {
+                        Parking[0] = 0; // No is selected
+                    }
+                }
+            });
 
             existingImage = dbHelper.getExistingImage(hikeID);
 
@@ -122,7 +135,7 @@ public class UpdateHikeActivity extends AppCompatActivity {
                                 nameEditText.getText().toString().trim(),
                                 locationEditText.getText().toString().trim(),
                                 dateTextView.getText().toString().trim(),
-                                isParking,
+                                Parking[0],
                                 lengthTextView.getText().toString().trim(),
                                 difficultyEditText.getText().toString().trim(),
                                 descriptionEditText.getText().toString().trim(),
@@ -234,5 +247,16 @@ public class UpdateHikeActivity extends AppCompatActivity {
     private void BacktoMainActivity() {
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
+    }
+
+    private void goBack() {
+        back_btn = findViewById(R.id.backButton);
+
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 }

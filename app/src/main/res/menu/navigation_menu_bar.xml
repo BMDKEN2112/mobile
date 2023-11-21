@@ -14,4 +14,9 @@
         android:title="Add"
         android:enabled="true"
         android:icon="@drawable/add_button" />
+    <item
+        android:id="@+id/navigation_reset"
+        android:title="Add"
+        android:enabled="true"
+        android:icon="@drawable/reset" />
 </menu>

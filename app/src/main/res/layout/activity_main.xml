@@ -3,8 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-
     <LinearLayout
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -13,9 +11,7 @@
         android:gravity="center"
         android:padding="16dp"
         tools:context=".MainActivity">
-
-
-        <TextView
+         <TextView
             android:id="@+id/nameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -23,7 +19,6 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_marginTop="8dp" />
-
         <TextView
             android:id="@+id/dateTextView"
             android:layout_width="wrap_content"
@@ -31,7 +26,6 @@
             android:text="Hike Date"
             android:textSize="18sp"
             android:layout_marginTop="4dp" />
-
         <TextView
             android:id="@+id/lengthTextView"
             android:layout_width="wrap_content"
@@ -39,7 +33,6 @@
             android:text="Hike Length"
             android:textSize="18sp"
             android:layout_marginTop="4dp" />
-
         <TextView
             android:id="@+id/locationTextView"
             android:layout_width="wrap_content"
@@ -47,7 +40,6 @@
             android:text="Hike Location"
             android:textSize="18sp"
             android:layout_marginTop="4dp" />
-
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
@@ -55,7 +47,6 @@
             android:layout_weight="1"
             android:scaleType="centerInside"
             android:src="@android:color/transparent" />
-
         <TextView
             android:id="@+id/parkingTextView"
             android:layout_width="wrap_content"
@@ -63,7 +54,6 @@
             android:text="Hike Parking"
             android:textSize="18sp"
             android:layout_marginTop="4dp" />
-
         <TextView
             android:id="@+id/difficultyTextView"
             android:layout_width="wrap_content"
@@ -71,7 +61,6 @@
             android:text="Hike Difficulty"
             android:textSize="18sp"
             android:layout_marginTop="4dp" />
-
         <TextView
             android:id="@+id/descriptionTextView"
             android:layout_width="wrap_content"
@@ -79,7 +68,6 @@
             android:text="Hike Description"
             android:textSize="18sp"
             android:layout_marginTop="3dp" />
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -87,28 +75,22 @@
             android:orientation="horizontal"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
-
             <Button
                 android:id="@+id/prevButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Previous" />
-
             <Button
                 android:id="@+id/nextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Next" />
         </LinearLayout>
-
-
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             app:menu="@menu/navigation_menu_bar" />
-
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
