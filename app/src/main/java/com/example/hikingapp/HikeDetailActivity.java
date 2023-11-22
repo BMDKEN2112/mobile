@@ -45,37 +45,26 @@ public class HikeDetailActivity extends AppCompatActivity {
         // Retrieve the Hike ID passed from MainActivity
         Intent intent = getIntent();
         String hikeJson = intent.getStringExtra("Hike_JSON");
-
         if (hikeJson != null) {
             // Deserialize the JSON string back to a HikeModel object
             Gson gson = new Gson();
             HikeModel hike = gson.fromJson(hikeJson, HikeModel.class);
-
             if (hike != null) {
-
                 TextView nameTextView = findViewById(R.id.detailNameTextView);
                 nameTextView.setText("Name: " + hike.getName());
-
                 TextView descriptionTextView = findViewById(R.id.detailDescriptionTextView);
                 descriptionTextView.setText("Description: " + hike.getDescription());
-
                 TextView dateTextView = findViewById(R.id.detailDateTextView);
                 dateTextView.setText("Date: " + hike.getDate());
-
                 TextView lengthTextView = findViewById(R.id.detailLengthTextView);
                 lengthTextView.setText("Length: " + hike.getLength());
-
                 TextView parkingTextView = findViewById(R.id.detailParkingTextView);
                 int parkingValue = hike.getParking();
                 parkingTextView.setText("Parking: " + (parkingValue == 1 ? "Yes" : "No"));
-
                 TextView difficultyTextView = findViewById(R.id.detailDifficultyTextView);
                 difficultyTextView.setText("Difficulty: " + hike.getDifficulty());
-
                 TextView locationTextView = findViewById(R.id.detailLocationTextView);
                 locationTextView.setText("Location: " + hike.getLocation());
-
-                // Set the ImageView with the hike's image
                 ImageView imageView = findViewById(R.id.detailImageView);
                 imageView.setImageBitmap(hike.getHikeImage());
             } else {
@@ -132,7 +121,6 @@ public class HikeDetailActivity extends AppCompatActivity {
 
     public void goBack() {
         goback_btn = findViewById(R.id.backButton);
-
         goback_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,7 +131,6 @@ public class HikeDetailActivity extends AppCompatActivity {
 
     public void deleteHike() {
         int hikeId = getIntent().getIntExtra("Hike_ID", -1);
-
         if (hikeId != -1) {
             deleteButton = findViewById(R.id.deleteButton);
             deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -153,10 +140,8 @@ public class HikeDetailActivity extends AppCompatActivity {
                         // Call the deleteHikeById method to delete the hike
                         DatabaseHelper dbHelper = new DatabaseHelper(HikeDetailActivity.this);
                         dbHelper.deleteHike(hikeId);
-
                         // Show a toast message to indicate the deletion
                         Toast.makeText(HikeDetailActivity.this, "Hike deleted", Toast.LENGTH_SHORT).show();
-
                         // Finish the activity to return to the previous screen
                         finish();
                     } catch (Exception e) {
@@ -172,7 +157,6 @@ public class HikeDetailActivity extends AppCompatActivity {
 
     public void updateHike() {
         int hikeId = getIntent().getIntExtra("Hike_ID", -1);
-
         if (hikeId != -1) {
             updateButton = findViewById(R.id.updateButton);
             updateButton.setOnClickListener(new View.OnClickListener() {

@@ -21,11 +21,8 @@ public class ObservationViewActivity extends AppCompatActivity {
 
 
     RecyclerView listViewObservations;
-
     ArrayList<ObservationModel> observations;
-
     ObservationAdapter adapter;
-
     ImageView goback_btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +36,6 @@ public class ObservationViewActivity extends AppCompatActivity {
 
     private void refreshPage(){
         Button refresh = findViewById(R.id.refresh_button);
-
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

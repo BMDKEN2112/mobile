@@ -20,13 +20,9 @@ import java.util.ArrayList;
 public class SearchHikeActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigation;
-
     SearchView searchView;
-
     RecyclerView recyclerView;
-
     ArrayList<HikeModel> hike;
-
     SearchHikeAdapter searchHikeAdapter;
 
     @Override
@@ -44,7 +40,6 @@ public class SearchHikeActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 searchHikeAdapter.getFilter().filter(newText);
@@ -74,16 +69,13 @@ public class SearchHikeActivity extends AppCompatActivity {
     }
 
     public void fetchData() {
-
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setMaxWidth(Integer.MAX_VALUE);
-
         DatabaseHelper db = new DatabaseHelper(this);
         hike = db.fetchHikeData();
         searchHikeAdapter = new SearchHikeAdapter(hike, this);
         recyclerView.setAdapter(searchHikeAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
     }
 }

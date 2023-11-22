@@ -28,13 +28,9 @@ import java.util.Locale;
 public class AddObservationActivity extends AppCompatActivity {
 
     private ImageView goback_btn, observationImageView;
-
     private EditText observationTimeEditText, observationNameEditText, observationCommentEditText;
-
     private ImageButton timeButton;
-
     private Button selectImageButton, addObservationButton;
-
     private Bitmap imageGallery;
 
     @Override
@@ -53,7 +49,6 @@ public class AddObservationActivity extends AppCompatActivity {
         addObservationButton = findViewById(R.id.addObservationButton);
         observationNameEditText = findViewById(R.id.observationNameEditText);
         observationCommentEditText = findViewById(R.id.observationCommentEditText);
-
         addObservationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,13 +61,11 @@ public class AddObservationActivity extends AppCompatActivity {
                             getHikeID(),
                             imageGallery
                     );
-                    //changeActivity();
                 }catch (Exception e){
                     Toast.makeText(AddObservationActivity.this, e.toString(), Toast.LENGTH_LONG).show();
                 }
             }
         });
-
     }
 
     public int getHikeID() {

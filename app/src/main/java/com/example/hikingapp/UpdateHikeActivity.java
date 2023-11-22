@@ -38,18 +38,12 @@ public class UpdateHikeActivity extends AppCompatActivity {
 
     EditText nameEditText, locationEditText, descriptionEditText, difficultyEditText;
     TextView parkingTextView, lengthTextView, dateTextView;
-
     RadioButton yesBTN, noBTN;
     RadioGroup parkingRadioGroup;
-
     ImageView hikeImageView, back_btn;
-
     Button updateHike;
-
     DatabaseHelper dbHelper;
-
     ImageButton calendarButton, timeButton;
-
     Bitmap existingImage;
 
 
@@ -67,12 +61,10 @@ public class UpdateHikeActivity extends AppCompatActivity {
     }
 
     private void getData(){
-
             dbHelper = new DatabaseHelper(this);
             Intent i = getIntent();
             int hikeID = i.getIntExtra("Hike_ID", -1);
             HikeModel hike = dbHelper.getHikeById(hikeID);
-
             nameEditText = findViewById(R.id.nameEditText);
             locationEditText = findViewById(R.id.locationEditText);
             descriptionEditText = findViewById(R.id.descriptionEditText);
@@ -85,27 +77,17 @@ public class UpdateHikeActivity extends AppCompatActivity {
             noBTN = findViewById(R.id.noRadioButton);
             hikeImageView = findViewById(R.id.hikeImageView);
             updateHike = findViewById(R.id.updateButton);
-
             nameEditText.setText(hike.getName());
             locationEditText.setText(hike.getLocation());
             descriptionEditText.setText(hike.getDescription());
             difficultyEditText.setText(hike.getDifficulty());
             dateTextView.setText(hike.getDate());
             lengthTextView.setText(hike.getLength());
-
             if(i.getIntExtra("isParking", 0) == 1) {
                 yesBTN.setChecked(true);
             } else {
                 noBTN.setChecked(false);
             }
-
-            int isParking;
-            if(yesBTN.isChecked()) {
-                isParking =  1;
-            } else {
-                isParking = 0;
-            }
-
             final int[] Parking = {yesBTN.isChecked() ? 1 : 0};
 
             parkingRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -118,13 +100,11 @@ public class UpdateHikeActivity extends AppCompatActivity {
                     }
                 }
             });
-
-            existingImage = dbHelper.getExistingImage(hikeID);
+            existingImage = dbHelper.getExistingHikeImage(hikeID);
 
             if (existingImage != null) {
                 hikeImageView.setImageBitmap(existingImage);
             }
-
             updateHike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -143,7 +123,6 @@ public class UpdateHikeActivity extends AppCompatActivity {
                         );
                         BacktoMainActivity();
                     }catch  (Exception e) {
-
                     }
                 }
             });
@@ -152,7 +131,6 @@ public class UpdateHikeActivity extends AppCompatActivity {
     public void selectCalendar(){
         dateTextView = findViewById(R.id.dateTextView);
         calendarButton = findViewById(R.id.calendarButton);
-
         calendarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -160,13 +138,11 @@ public class UpdateHikeActivity extends AppCompatActivity {
             }
         });
     }
-
     private void showDatePickerDialog() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
-
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
                 new DatePickerDialog.OnDateSetListener() {
@@ -178,14 +154,12 @@ public class UpdateHikeActivity extends AppCompatActivity {
                 },
                 year, month, day
         );
-
         datePickerDialog.show();
     }
 
     public void selectTime(){
         lengthTextView = findViewById(R.id.lengthEditText);
         timeButton = findViewById(R.id.timeButton);
-
         timeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -193,7 +167,6 @@ public class UpdateHikeActivity extends AppCompatActivity {
             }
         });
     }
-
     private void showTimePickerDialog() {
         TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -205,7 +178,6 @@ public class UpdateHikeActivity extends AppCompatActivity {
                 lengthTextView.setText(time);
             }
         }, 0, 0, true); // The last parameter, true, enables 24-hour format
-
         timePickerDialog.show();
     }
 
@@ -223,22 +195,17 @@ public class UpdateHikeActivity extends AppCompatActivity {
             }
         });
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 101 && resultCode == Activity.RESULT_OK) {
             Uri uri = data.getData();
             hikeImageView.setImageURI(uri);
-
-            // Database purpose
-
             try {
                 existingImage = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
         } else {
             Toast.makeText(UpdateHikeActivity.this, "No Image", Toast.LENGTH_SHORT).show();
         }

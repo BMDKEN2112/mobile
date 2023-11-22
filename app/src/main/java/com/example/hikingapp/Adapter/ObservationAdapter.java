@@ -31,7 +31,6 @@ import java.util.ArrayList;
 
 public class ObservationAdapter extends RecyclerView.Adapter<ObservationAdapter.ObservationVH> {
     ArrayList<ObservationModel> observations;
-
     Context context;
 
     public ObservationAdapter(ArrayList<ObservationModel> observations, Context context){
@@ -46,39 +45,26 @@ public class ObservationAdapter extends RecyclerView.Adapter<ObservationAdapter.
         View view = inflater.inflate(R.layout.observationdata, parent, false);
         return new ObservationVH(view);
     }
-
     @Override
     public void onBindViewHolder(@NonNull ObservationVH holder, int position) {
         ObservationModel observationModel = observations.get(position);
         holder.observationName.setText(String.valueOf(observationModel.getObservationName()));
         holder.observationComment.setText(String.valueOf(observationModel.getObservationComment()));
         holder.observationImage.setImageBitmap(observationModel.getObservationImage());
-
         holder.observationCardView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 final Dialog dialog = new Dialog(context);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.bottomsheetdialoglayout);
-
                 LinearLayout updateButton = dialog.findViewById(R.id.dialogUpdate);
                 LinearLayout deleteButton = dialog.findViewById(R.id.dialogDelete);
-
                 updateButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(context, UpdateObservationActivity.class);
                         if (context != null && observationModel != null) {
                             intent.putExtra("Observation_ID", observationModel.getObservationID());
-    //                        intent.putExtra("Observation_Name", observationModel.getObservationName());
-    //                        intent.putExtra("Observation_Comment", observationModel.getObservationComment());
-    //                        intent.putExtra("Observation_Time", observationModel.getObservationTime());
-    //
-    //                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-    //                        observationModel.getObservationImage().compress(Bitmap.CompressFormat.PNG, 100, stream);
-    //                        byte[] imageBytes = stream.toByteArray();
-    //                        intent.putExtra("Observation_Image", imageBytes);
-
                             context.startActivity(intent);
                             dialog.dismiss();
                             Toast.makeText(context, "Edit is clicked", Toast.LENGTH_SHORT).show();
@@ -87,7 +73,6 @@ public class ObservationAdapter extends RecyclerView.Adapter<ObservationAdapter.
                         }
                     }
                 });
-
                 deleteButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -96,7 +81,6 @@ public class ObservationAdapter extends RecyclerView.Adapter<ObservationAdapter.
                         if (context != null && observationModel != null) {
                             DatabaseHelper dbHelper = new DatabaseHelper(context);
                             dbHelper.deleteObservation(observationModel.getObservationID());
-
                         } else {
                             if (context == null) {
                                 Log.e("DeleteObservation", "Context is null");
@@ -105,10 +89,8 @@ public class ObservationAdapter extends RecyclerView.Adapter<ObservationAdapter.
                                 Log.e("DeleteObservation", "ObservationModel is null");
                             }
                         }
-
                     }
                 });
-
                 dialog.show();
                 dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -117,18 +99,15 @@ public class ObservationAdapter extends RecyclerView.Adapter<ObservationAdapter.
                 return true;
             }
         });
-
     }
 
     @Override
     public int getItemCount() {
         return observations.size();
     }
-
     class ObservationVH extends RecyclerView.ViewHolder {
         TextView observationName, observationComment;
         ImageView observationImage;
-
         CardView observationCardView;
         public ObservationVH(@NonNull View itemView) {
             super(itemView);

@@ -20,11 +20,9 @@ import com.example.hikingapp.Model.ObservationModel;
 import android.graphics.BitmapFactory;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private final Context context;
     public static final String DATABASE_NAME = "HikeManagement.db";
     public static final int DATABASE_VERSION = 2;
     public static final String TABLE_HIKE = "Hikes";
-
     public static final String COLUMN_HIKE_ID = "Hike_ID";
     public static final String COLUMN_HIKE_NAME  = "Hike_Name";
     public static final String COLUMN_HIKE_LOCATION  = "Hike_Location";
@@ -34,25 +32,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_HIKE_DIFFICULTY = "Hike_Difficulty";
     public static final String COLUMN_HIKE_DESCRIPTION = "Hike_Description";
     public static final String COLUMN_HIKE_IMAGE = "Hike_Image";
-
-    private ByteArrayOutputStream byteArrayOutputStream;
-
-    private byte[] imageInByte;
-
     public static final String TABLE_OBSERVATION = "Observations";
-
     public static final String COLUMN_OBSERVATION_ID = "Observation_ID";
-
     public static final String COLUMN_OBSERVATION_NAME = "Observation_Name";
-
     public static final String COLUMN_OBSERVATION_TIME = "Observation_Time";
-
     public static final String COLUMN_OBSERVATION_COMMENT = "Observation_Comment";
-
     public static final String COLUMN_OBSERVATION_IMAGE = "Observation_Image";
-
     public static final String COLUMN_HIKE_ID_REF = "Hike_ID";
 
+    private ByteArrayOutputStream byteArrayOutputStream;
+    private byte[] imageInByte;
+    private final Context context;
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -95,11 +85,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         Bitmap imageToStorageBitmap = Hike_Image;
-
         byteArrayOutputStream = new ByteArrayOutputStream();
         imageToStorageBitmap.compress(Bitmap.CompressFormat.PNG, 25, byteArrayOutputStream);
         imageInByte = byteArrayOutputStream.toByteArray();
-
         contentValues.put(COLUMN_HIKE_NAME, name);
         contentValues.put(COLUMN_HIKE_LOCATION, location);
         contentValues.put(COLUMN_HIKE_DATE, date);
@@ -108,10 +96,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COLUMN_HIKE_DIFFICULTY, level);
         contentValues.put(COLUMN_HIKE_DESCRIPTION, description);
         contentValues.put("Hike_Image", imageInByte);
-
         long result = db.insert(TABLE_HIKE, null, contentValues);
         if(result == -1) {
-            //int newlyAssignedHikeID = (int) result;
             Toast.makeText(context, "Failed", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(context, "Success", Toast.LENGTH_LONG).show();
@@ -124,17 +110,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         Bitmap imageToStorageBitmap = observationImage;
-
         byteArrayOutputStream = new ByteArrayOutputStream();
         imageToStorageBitmap.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream);
         imageInByte = byteArrayOutputStream.toByteArray();
-
         contentValues.put(COLUMN_OBSERVATION_NAME, observationName);
         contentValues.put(COLUMN_OBSERVATION_TIME, observationTime);
         contentValues.put(COLUMN_OBSERVATION_COMMENT, observationComment);
         contentValues.put(COLUMN_HIKE_ID_REF, hikeID);
         contentValues.put(COLUMN_OBSERVATION_IMAGE, imageInByte);
-
         long result = db.insert(TABLE_OBSERVATION, null, contentValues);
         if(result == -1) {
             Toast.makeText(context, "Failed", Toast.LENGTH_LONG).show();
@@ -145,11 +128,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public ArrayList<HikeModel> fetchHikeData() {
         ArrayList<HikeModel> hikeList = new ArrayList<>();
-
         SQLiteDatabase db = getReadableDatabase();
-
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_HIKE + " ORDER BY " + COLUMN_HIKE_ID + " ASC", null);
-
         if (cursor.moveToFirst()){
             do{
                 int ID = cursor.getInt(0);
@@ -161,12 +141,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String Difficulty = cursor.getString(6);
                 String Description = cursor.getString(7);
                 byte[] image = cursor.getBlob(8);
-
                 Bitmap BitmapImage = BitmapFactory.decodeByteArray(image, 0, image.length);
-
                 HikeModel hike = new HikeModel(ID, Name, Location, Date, Parking, Length, Difficulty, Description, BitmapImage);
                 hikeList.add(hike);
-
             }while (cursor.moveToNext());
         }
         return hikeList;
@@ -185,37 +162,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null,
                 null
         );
-
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 hike = new HikeModel();
-
                 int hikeNameColumnIndex = cursor.getColumnIndex("Hike_Name");
                 hike.setName(cursor.getString(hikeNameColumnIndex));
-
                 int hikeDateColumnIndex = cursor.getColumnIndex("Hike_Date");
                 hike.setDate(cursor.getString(hikeDateColumnIndex));
-
                 int hikeDescriptionColumnIndex = cursor.getColumnIndex("Hike_Description");
                 hike.setDescription(cursor.getString(hikeDescriptionColumnIndex));
-
                 int hikeLengthColumnIndex = cursor.getColumnIndex("Hike_Length");
                 hike.setLength(cursor.getString(hikeLengthColumnIndex));
-
                 int hikeParkingColumnIndex = cursor.getColumnIndex("Hike_Parking");
                 int parkingValue = cursor.getInt(hikeParkingColumnIndex);
                 hike.setParking(parkingValue);
-
-
                 int hikeLocationColumnIndex = cursor.getColumnIndex("Hike_Location");
                 hike.setLocation(cursor.getString(hikeLocationColumnIndex));
-
                 int hikeDifficultyColumnIndex = cursor.getColumnIndex("Hike_Difficulty");
                 hike.setDifficulty(cursor.getString(hikeDifficultyColumnIndex));
-
                 int hikeImageColumnIndex = cursor.getColumnIndex("Hike_Image");
                 byte[] imageBytes = cursor.getBlob(hikeImageColumnIndex);
-
                 // Convert the byte array to a Bitmap
                 Bitmap image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                 hike.setHikeImage(image);
@@ -228,14 +194,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         else {
             Log.e("DatabaseHelper", "Cursor is null");
         }
-
         return hike;
     }
 
     public ObservationModel getObservationById(int observationId) {
         SQLiteDatabase db = this.getReadableDatabase();
         ObservationModel observation = null;
-
         Cursor cursor = db.query(
                 TABLE_OBSERVATION,  // Table name
                 null,               // All columns
@@ -245,26 +209,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null,
                 null
         );
-
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 observation = new ObservationModel();
-
                 int observationNameColumnIndex = cursor.getColumnIndex("Observation_Name");
                 observation.setObservationName(cursor.getString(observationNameColumnIndex));
-
                 int observationTimeColumnIndex = cursor.getColumnIndex("Observation_Time");
                 observation.setObservationTime(cursor.getString(observationTimeColumnIndex));
-
                 int observationCommentColumnIndex = cursor.getColumnIndex("Observation_Comment");
                 observation.setObservationComment(cursor.getString(observationCommentColumnIndex));
-
                 int hikeIdColumnIndex = cursor.getColumnIndex("Hike_ID_Ref");
                 observation.setHikeID(cursor.getInt(hikeIdColumnIndex));
-
                 int observationImageColumnIndex = cursor.getColumnIndex("Observation_Image");
                 byte[] imageBytes = cursor.getBlob(observationImageColumnIndex);
-
                 // Convert the byte array to a Bitmap
                 Bitmap image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                 observation.setObservationImage(image);
@@ -275,7 +232,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } else {
             Log.e("DatabaseHelper", "Cursor is null");
         }
-
         return observation;
     }
 
@@ -308,10 +264,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return stream.toByteArray();
     }
 
-    public Bitmap getExistingImage(int hikeId) {
+    public Bitmap getExistingHikeImage(int hikeId) {
         SQLiteDatabase db = this.getReadableDatabase();
         Bitmap existingImage = null;
-
         String[] columns = {COLUMN_HIKE_IMAGE};
         String selection = COLUMN_HIKE_ID + " = ?";
         String[] selectionArgs = {String.valueOf(hikeId)};
@@ -325,28 +280,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null,
                 null
         );
-
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 int imageColumnIndex = cursor.getColumnIndex(COLUMN_HIKE_IMAGE);
                 byte[] imageBytes = cursor.getBlob(imageColumnIndex);
-
                 // Convert the byte array to a Bitmap
                 existingImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
             }
             cursor.close();
         }
-
         return existingImage;
     }
+
     public Bitmap getExistingObservationImage(int observationId) {
         SQLiteDatabase db = this.getReadableDatabase();
         Bitmap existingImage = null;
-
         String[] columns = {COLUMN_OBSERVATION_IMAGE};
         String selection = COLUMN_OBSERVATION_ID + " = ?";
         String[] selectionArgs = {String.valueOf(observationId)};
-
         Cursor cursor = db.query(
                 TABLE_OBSERVATION,
                 columns,
@@ -356,7 +307,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null,
                 null
         );
-
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 int imageColumnIndex = cursor.getColumnIndex(COLUMN_OBSERVATION_IMAGE);
@@ -367,7 +317,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
             cursor.close();
         }
-
         return existingImage;
     }
 
@@ -398,11 +347,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public ArrayList<ObservationModel> fetchObservationData(int hikeID){
         ArrayList<ObservationModel> observationList = new ArrayList<>();
-
         SQLiteDatabase db = getReadableDatabase();
-
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_OBSERVATION + " WHERE " + COLUMN_HIKE_ID_REF + " = " + hikeID , null);
-
         if (cursor.moveToNext()){
             do {
                 int observationID = cursor.getInt(0);
@@ -411,9 +357,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String observationComment = cursor.getString(3);
                 int Hike_ID = cursor.getInt(4);
                 byte[] observationImage = cursor.getBlob(5);
-
                 Bitmap objectBitmap = BitmapFactory.decodeByteArray(observationImage, 0, observationImage.length);
-
                 ObservationModel o = new ObservationModel(observationID, observationName, observationTime, observationComment, Hike_ID, objectBitmap);
                 observationList.add(o);
             }while (cursor.moveToNext());
